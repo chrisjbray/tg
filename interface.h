@@ -79,6 +79,7 @@ void print_start (void);
 void print_end (void);
 void print_date_full (struct in_ev *ev, long t);
 void print_date (struct in_ev *ev, long t);
+void print_now (struct in_ev *ev);
 
 void play_sound (void);
 void update_prompt (void);

@@ -2248,6 +2248,7 @@ void print_user_info_gw (struct tgl_state *TLSR, void *extra, int success, struc
   mprint_start (ev);
   tgl_peer_t *C = (void *)U;
   if (!enable_json) {
+    print_now (ev);
     mpush_color (ev, COLOR_YELLOW);
     mprintf (ev, "User ");
     print_user_name (ev, U->id, C);
@@ -2320,6 +2321,7 @@ void print_dialog_list_gw (struct tgl_state *TLSR, void *extra, int success, int
   if (!success) { print_fail (ev); return; }
   mprint_start (ev);
   if (!enable_json)  {
+    print_now (ev);
     mpush_color (ev, COLOR_YELLOW);
     int i;
     for (i = size - 1; i >= 0; i--) {
@@ -2428,6 +2430,7 @@ void print_read_list (int num, struct tgl_message *list[]) {
 
     assert (c1 + c2 > 0);
     if (!enable_json)  {
+      print_now (ev);
       mpush_color (ev, COLOR_YELLOW);
       switch (tgl_get_peer_type (to_id)) {
       case TGL_PEER_USER:
@@ -2528,6 +2531,7 @@ void type_notification_upd (struct tgl_state *TLSR, struct tgl_user *U, enum tgl
   if (enable_json) { return; }
   struct in_ev *ev = notify_ev;
   mprint_start (ev);
+  print_now (ev);
   mpush_color (ev, COLOR_YELLOW);
   mprintf (ev, "User ");
   print_user_name (ev, U->id, (void *)U);
@@ -2544,6 +2548,7 @@ void type_in_chat_notification_upd (struct tgl_state *TLSR, struct tgl_user *U, 
   if (enable_json) { return; }
   struct in_ev *ev = notify_ev;
   mprint_start (ev);
+  print_now (ev);
   mpush_color (ev, COLOR_YELLOW);
   mprintf (ev, "User ");
   print_user_name (ev, U->id, (void *)U);
@@ -2837,6 +2842,7 @@ void user_status_upd (struct tgl_state *TLS, struct tgl_user *U) {
   mprint_start (ev);
   if (!enable_json)
   {
+    print_now (ev);
     mpush_color (ev, COLOR_YELLOW);
     mprintf (ev, "User ");
     print_user_name(ev, U->id, (void *) U);
@@ -3525,6 +3531,13 @@ void print_encr_chat_name_full (struct in_ev *ev, tgl_peer_id_t id, tgl_peer_t *
 }
 
 static char *monthes[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+
+void print_now (struct in_ev *ev) {
+  time_t rawtime;
+  time (&rawtime);
+  print_date (ev, rawtime);
+}
+
 void print_date (struct in_ev *ev, long t) {
   struct tm *tm = localtime ((void *)&t);
   if (time (0) - t < 12 * 60 * 60) {
